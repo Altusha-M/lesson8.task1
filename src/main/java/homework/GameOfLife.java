@@ -1,6 +1,6 @@
 package homework;
 
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -8,14 +8,16 @@ import java.util.concurrent.CyclicBarrier;
  * Hello world!
  */
 public class GameOfLife {
-    public static final int NUMBER_OF_ITERATIONS = 100;
-    public static final int FIELD_SIZE = 15000;
+    public static final int NUMBER_OF_ITERATIONS = 5;
+    public static final int FIELD_SIZE = 16;
     public static int currentIteration = 0;
     public static volatile boolean[][] currentField = new boolean[FIELD_SIZE][FIELD_SIZE];
     public static volatile boolean[][] newField = new boolean[FIELD_SIZE][FIELD_SIZE];
 
 
     static class Execute {
+        private final int a = 1;
+
         int countNeighbors(int x, int y) {
             int count = 0;
             for (int dx = -1; dx < 2; dx++) {
@@ -32,6 +34,8 @@ public class GameOfLife {
             if (currentField[x][y]) {
                 count--;
             }
+            ArrayList<Integer> al = new ArrayList<Integer>();
+
             return count;
         }
 
@@ -58,6 +62,8 @@ public class GameOfLife {
 
     public static void main(String[] args) throws InterruptedException, BrokenBarrierException {
         createField();
+        String s1 = "wqer";
+        Integer int2 = new Integer (15);
         boolean[][] tmp = new boolean[FIELD_SIZE][FIELD_SIZE];
         for (int x = 0; x < FIELD_SIZE; x++) {
             System.arraycopy(currentField[x], 0, tmp[x], 0, FIELD_SIZE);
@@ -67,11 +73,12 @@ public class GameOfLife {
         long f = System.currentTimeMillis() - s;
 //        draw();
         System.out.println("one thread time " + f);
-
-
-        reset(tmp);
-        s = System.currentTimeMillis();
-        multithreadingCompute(s);
+        draw();
+//
+//
+//        reset(tmp);
+//        s = System.currentTimeMillis();
+//        multithreadingCompute(s);
 
     }
 
@@ -167,28 +174,28 @@ public class GameOfLife {
     }
 
     public static void createField() {
-        for (int i = 0; i < currentField.length; i++) {
-            for (int j = 0; j < currentField.length; j++) {
-                currentField[i][j] = (new Random().nextInt(100) > 55);
-            }
-        }
-//        field     = new boolean[][]{
-//                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
-//                { false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-//                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }};
+//        for (int i = 0; i < currentField.length; i++) {
+//            for (int j = 0; j < currentField.length; j++) {
+//                currentField[i][j] = (new Random().nextInt(100) > 55);
+//            }
+//        }
+        currentField     = new boolean[][]{
+                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false,  false, false, false, false, false, false, false, false },
+                { false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+                { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }};
         try {
             System.out.println("Initial field");
 //            draw();
